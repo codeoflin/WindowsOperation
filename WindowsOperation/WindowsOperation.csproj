@@ -60,6 +60,11 @@
     <Compile Include="WindowsObjects\WindowBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include=".nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="windows.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
