@@ -5,7 +5,7 @@
     <id>linz.WindowsOperation</id>
 
     <!-- The package version number that is used when resolving dependencies -->
-    <version>0.5.0-beta</version>
+    <version>1.0.0</version>
 
     <!-- Authors contain text that appears directly on the gallery -->
     <authors>Nothing ID:1</authors>
@@ -17,10 +17,10 @@
     <owners>linz</owners>
 
     <!-- Project URL provides a link for the gallery -->
-    <projectUrl>http://github.com/contoso/UsefulStuff</projectUrl>
+    <projectUrl>https://gitee.com/o70078/WindowsOperation</projectUrl>
 
     <!-- License information is displayed on the gallery -->
-    <license type="expression">GPL 3.0</license>
+    <license type="expression">MIT</license>
 
 
     <!-- The icon is used in Visual Studio's package manager UI -->

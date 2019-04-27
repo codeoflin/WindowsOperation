@@ -14,12 +14,15 @@ namespace WindowsOperation
 	public static class NativeMethods
 	{
 		[DllImport("user32.dll", SetLastError = true)]
+		public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+		[DllImport("user32.dll", SetLastError = true)]
 		public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
 
 		[DllImport("user32.dll", SetLastError = true)]
 		public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 		[DllImport("user32.dll")]
-		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndlnsertAfter, int X, int Y, int cx, int cy, uint Flags);
+		public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndlnsertAfter, int X, int Y, int cx, int cy, uint Flags);
 
 		[DllImport("user32.dll")]
 		public static extern bool SetForegroundWindow(IntPtr hWnd);

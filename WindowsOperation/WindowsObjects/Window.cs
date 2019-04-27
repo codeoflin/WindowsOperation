@@ -314,6 +314,23 @@ namespace WindowsOperation.WindowsObjects
 			}
 		}
 
+		/// <summary>
+		　　/// 设置窗体为TopMost
+		　　/// </summary>
+		　　/// <param name="hWnd"></param>
+		public bool TopMost
+		{
+			get
+			{
+				int exStyle = NativeMethods.GetWindowLong(Handle, (int)GWL.EXSTYLE);
+				return (exStyle & (int)WS.EX_TOPMOST) == (int)WS.EX_TOPMOST;
+			}
+			set
+			{
+				NativeMethods.SetWindowPos(Handle, (IntPtr)(value ? HWND.TOPMOST : HWND.NOTOPMOST), this.Left, this.Top, this.Width, this.Height, 0);
+			}
+		}
+
 		#endregion
 	}//End Class
 }

@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using WindowsOperation.TypeHelpers;
 using WindowsOperation.WindowsObjects;
+
+
 namespace Test
 {
 	static class Program
@@ -49,6 +53,11 @@ namespace Test
 
 			//翻转菜单的可用状态
 			win.Menu.Items[1].Enable = !win.Menu.Items[1].Enable;
+
+			//设为顶层窗口
+			win.TopMost = !win.TopMost;
+			win.TopMost = !win.TopMost;
+			win.TopMost = !win.TopMost;
 
 		}
 	}
