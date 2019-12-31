@@ -34,6 +34,20 @@ namespace WindowsOperation.WindowsObjects
 
 		#region 属性
 
+
+		/// <summary>
+		/// 进程ID
+		/// </summary>
+		public uint ProcessID
+		{
+			get
+			{
+				var iret = NativeMethods.GetWindowThreadProcessId(Handle, out uint pid);
+				if (iret == 0) return uint.MaxValue;
+				return pid;
+			}
+		}
+
 		/// <summary>
 		/// 
 		/// </summary>

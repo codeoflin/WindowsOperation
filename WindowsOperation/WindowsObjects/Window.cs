@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsOperation.Enums;
@@ -9,7 +10,6 @@ using WindowsOperation.Modules;
 
 namespace WindowsOperation.WindowsObjects
 {
-
 	/// <summary>
 	/// 窗口
 	/// </summary>
@@ -74,6 +74,31 @@ namespace WindowsOperation.WindowsObjects
 		#endregion
 
 		#region 方法
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="subwindow"></param>
+		/// <param name="wParam"></param>
+		public async void Command(Window subwindow, int wParam)
+		{
+			await NativeMethods.SendMessageAsync(Handle, WM.COMMAND, wParam, subwindow.Handle);
+			await NativeMethods.SendMessageAsync(Handle, WM.COMMAND, wParam, subwindow.Handle);
+			//NativeMethods.SendMessage(Handle, BM_CLICK, 0, point.X + (point.Y * 0x10000));
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="subwindow"></param>
+		/// <param name="wParam"></param>
+		public void PostCommand(Window subwindow, int wParam)
+		{
+			NativeMethods.PostMessage(Handle, (int)WM.COMMAND, wParam, subwindow.Handle);
+			NativeMethods.PostMessage(Handle, (int)WM.COMMAND, wParam, subwindow.Handle);
+			//NativeMethods.SendMessage(Handle, BM_CLICK, 0, point.X + (point.Y * 0x10000));
+		}
+		#region 各种点击系列
 		/// <summary>
 		/// 点击一个窗口
 		/// </summary>
@@ -83,8 +108,45 @@ namespace WindowsOperation.WindowsObjects
 		{
 			var point = Point.Empty;
 			if (p != null) point = p.Value;
-			await NativeMethods.PostMessageAsync(Handle, WM.LBUTTONDOWN, 0, point.X + (point.Y * 0x10000));
-			await NativeMethods.PostMessageAsync(Handle, WM.LBUTTONUP, 0, point.X + (point.Y * 0x10000));
+			await NativeMethods.SendMessageAsync(Handle, BM_CLICK, 0, point.X + (point.Y * 0x10000));
+		}
+		/// <summary>
+		/// 点击一个窗口
+		/// </summary>
+		/// <param name="hwnd">句柄</param>
+		/// <param name="point">相对窗口内坐标</param>
+		public void PostClick(Point? p = null)
+		{
+			var point = Point.Empty;
+			if (p != null) point = p.Value;
+			NativeMethods.PostMessage(Handle, BM_CLICK, 0, point.X + (point.Y * 0x10000));
+		}
+
+		/// <summary>
+		/// 点击一个窗口
+		/// </summary>
+		/// <param name="hwnd">句柄</param>
+		/// <param name="point">相对窗口内坐标</param>
+		public async void MouseLClick(Point? p = null)
+		{
+			var point = Point.Empty;
+			if (p != null) point = p.Value;
+			await NativeMethods.SendMessageAsync(Handle, WM.LBUTTONDOWN, 0, point.X + (point.Y * 0x10000));
+			await NativeMethods.SendMessageAsync(Handle, WM.LBUTTONUP, 0, point.X + (point.Y * 0x10000));
+			//NativeMethods.SendMessage(Handle, BM_CLICK, 0, point.X + (point.Y * 0x10000));
+		}
+
+		/// <summary>
+		/// 点击一个窗口
+		/// </summary>
+		/// <param name="hwnd">句柄</param>
+		/// <param name="point">相对窗口内坐标</param>
+		public void PostMouseLClick(Point? p = null)
+		{
+			var point = Point.Empty;
+			if (p != null) point = p.Value;
+			NativeMethods.PostMessage(Handle, WM.LBUTTONDOWN, 0, point.X + (point.Y * 0x10000));
+			NativeMethods.PostMessage(Handle, WM.LBUTTONUP, 0, point.X + (point.Y * 0x10000));
 			//NativeMethods.SendMessage(Handle, BM_CLICK, 0, point.X + (point.Y * 0x10000));
 		}
 
@@ -93,12 +155,26 @@ namespace WindowsOperation.WindowsObjects
 		/// </summary>
 		/// <param name="hwnd">句柄</param>
 		/// <param name="point">相对窗口内坐标</param>
-		public async void ClickRight(Point? p = null)
+		public async void MouseRClick(Point? p = null)
 		{
 			var point = Point.Empty;
 			if (p != null) point = p.Value;
-			await NativeMethods.PostMessageAsync(Handle, WM.RBUTTONDOWN, 0, point.X + (point.Y * 0x10000));
-			await NativeMethods.PostMessageAsync(Handle, WM.RBUTTONUP, 0, point.X + (point.Y * 0x10000));
+			await NativeMethods.SendMessageAsync(Handle, WM.RBUTTONDOWN, 0, point.X + (point.Y * 0x10000));
+			await NativeMethods.SendMessageAsync(Handle, WM.RBUTTONUP, 0, point.X + (point.Y * 0x10000));
+			//NativeMethods.SendMessage(Handle, BM_CLICK, 0, point.X + (point.Y * 0x10000));
+		}
+
+		/// <summary>
+		/// 右键点击一个窗口
+		/// </summary>
+		/// <param name="hwnd">句柄</param>
+		/// <param name="point">相对窗口内坐标</param>
+		public void PostMouseRClick(Point? p = null)
+		{
+			var point = Point.Empty;
+			if (p != null) point = p.Value;
+			NativeMethods.PostMessage(Handle, WM.RBUTTONDOWN, 0, point.X + (point.Y * 0x10000));
+			NativeMethods.PostMessage(Handle, WM.RBUTTONUP, 0, point.X + (point.Y * 0x10000));
 			//NativeMethods.SendMessage(Handle, BM_CLICK, 0, point.X + (point.Y * 0x10000));
 		}
 
@@ -108,31 +184,262 @@ namespace WindowsOperation.WindowsObjects
 		/// <param name="menuitem"></param>
 		public async void ClickMenu(MenuItem menuitem)
 		{
-			await NativeMethods.PostMessageAsync(Handle, WM.COMMAND, menuitem.ItemID, 0);
+			await NativeMethods.SendMessageAsync(Handle, WM.COMMAND, menuitem.ItemID, 0);
 		}
 
+		/// <summary>
+		/// 点击菜单
+		/// </summary>
+		/// <param name="menuitem"></param>
+		public void PostClickMenu(MenuItem menuitem)
+		{
+			NativeMethods.PostMessage(Handle, WM.COMMAND, menuitem.ItemID, 0);
+		}
+		#endregion
+
+		#region 读写内存系列
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="buff"></param>
+		/// <returns></returns>
+		public int ReadMemory(int address, byte[] buff)
+		{
+			if (buff == null) throw new Exception("buff不能为null!");
+			if (buff.Length <= 0) throw new Exception("buff长度不能为0!");
+			var hprocess = NativeMethods.OpenProcess(ProcessAccessFlags.All, false, this.ProcessID);
+			if (hprocess == IntPtr.Zero)
+			{
+				var errcode = Marshal.GetLastWin32Error();
+				return -1;
+			}
+			int iret = NativeMethods.ReadProcessMemory(hprocess, new IntPtr(address), buff, buff.Length, out var readlen) ? 0 : -2;
+			NativeMethods.CloseHandle(hprocess);
+			return iret;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="size"></param>
+		/// <param name="buff"></param>
+		/// <returns></returns>
+		public int ReadMemory(int address, int size, out byte[] buff)
+		{
+			if (size <= 0) throw new Exception("长度不能为0!");
+			buff = new byte[size];
+			return ReadMemory(address, buff);
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int ReadMemory(int address, out Int16 dat)
+		{
+			dat = 0;
+			var iret = ReadMemory(address, 2, out var buff);
+			if (iret != 0) return iret;
+			dat = (Int16)((buff[1] << 8) + buff[0]);
+			return iret;
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int ReadMemory(int address, out UInt16 dat)
+		{
+			dat = 0;
+			var iret = ReadMemory(address, 2, out var buff);
+			if (iret != 0) return iret;
+			dat = (UInt16)((buff[1] << 8) + buff[0]);
+			return iret;
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int ReadMemory(int address, out Int32 dat)
+		{
+			dat = 0;
+			var iret = ReadMemory(address, 4, out var buff);
+			if (iret != 0) return iret;
+			dat = ((buff[3] << 24) + (buff[2] << 16) + (buff[1] << 8) + buff[0]);
+			return iret;
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int ReadMemory(int address, out UInt32 dat)
+		{
+			dat = 0;
+			var iret = ReadMemory(address, 4, out var buff);
+			if (iret != 0) return iret;
+			dat = (UInt32)((buff[3] << 24) + (buff[2] << 16) + (buff[1] << 8) + buff[0]);
+			return iret;
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int ReadMemory(int address, out Int64 dat)
+		{
+			dat = 0;
+			var iret = ReadMemory(address, 8, out var buff);
+			if (iret != 0) return iret;
+			for (int i = 7; i >= 0; i++)
+			{
+				dat <<= 8;
+				dat += buff[i];
+			}
+			return iret;
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int ReadMemory(int address, out UInt64 dat)
+		{
+			dat = 0;
+			var iret = ReadMemory(address, 8, out var buff);
+			if (iret != 0) return iret;
+			for (int i = 7; i >= 0; i++)
+			{
+				dat <<= 8;
+				dat += buff[i];
+			}
+			return iret;
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="buff"></param>
+		/// <returns></returns>
+		public int WriteMemory(int address, byte[] buff)
+		{
+			if (buff == null) throw new Exception("buff不能为null!");
+			if (buff.Length <= 0) throw new Exception("buff长度不能为0!");
+			var hprocess = NativeMethods.OpenProcess(ProcessAccessFlags.All, false, this.ProcessID);
+			if (hprocess == IntPtr.Zero)
+			{
+				var errcode = Marshal.GetLastWin32Error();
+				return -1;
+			}
+			int iret = NativeMethods.WriteProcessMemory(hprocess, new IntPtr(address), buff, buff.Length, out var readlen) ? 0 : -2;
+			if (iret != 0)
+			{
+				var errcode = Marshal.GetLastWin32Error();
+				return -1;
+			}
+			NativeMethods.CloseHandle(hprocess);
+			return 0;
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int WriteMemory(int address, Int16 dat)
+		{
+			return WriteMemory(address, new byte[] { (byte)dat, (byte)(dat >> 8) });
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int WriteMemory(int address, UInt16 dat)
+		{
+			return WriteMemory(address, new byte[] { (byte)dat, (byte)(dat >> 8) });
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int WriteMemory(int address, Int32 dat)
+		{
+			return WriteMemory(address, new byte[] { (byte)dat, (byte)(dat >> 8), (byte)(dat >> 16), (byte)(dat >> 24) });
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int WriteMemory(int address, UInt32 dat)
+		{
+			return WriteMemory(address, new byte[] { (byte)dat, (byte)(dat >> 8), (byte)(dat >> 16), (byte)(dat >> 24) });
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int WriteMemory(int address, Int64 dat)
+		{
+			return WriteMemory(address, new byte[] { (byte)dat, (byte)(dat >> 8), (byte)(dat >> 16), (byte)(dat >> 24), (byte)(dat >> 32), (byte)(dat >> 40), (byte)(dat >> 48), (byte)(dat >> 56) });
+		}
+
+		/// <summary>
+		/// /
+		/// </summary>
+		/// <param name="address"></param>
+		/// <param name="dat"></param>
+		/// <returns></returns>
+		public int WriteMemory(int address, UInt64 dat)
+		{
+			return WriteMemory(address, new byte[] { (byte)dat, (byte)(dat >> 8), (byte)(dat >> 16), (byte)(dat >> 24), (byte)(dat >> 32), (byte)(dat >> 40), (byte)(dat >> 48), (byte)(dat >> 56) });
+		}
+
+		#endregion
 
 		/// <summary>
 		/// 
 		/// </summary>
 		public async Task<int> Close()
 		{
-
 			//NativeMethods.CloseWindow(Handle);
-			return await NativeMethods.PostMessageAsync(Handle, WM.CLOSE, 0, 0);
-
+			return await NativeMethods.SendMessageAsync(Handle, WM.CLOSE, 0, 0);
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public async Task<int> Activity()
+		public void Activity()
 		{
-			return await Task.Factory.StartNew<int>(() =>
-			{
-				//return (int)NativeMethods.SetActiveWindow(Handle);
-				return NativeMethods.SetForegroundWindow(Handle) ? 0 : -1;
-			});
+			//NativeMethods.SwitchToThisWindow(Handle, true);
+			NativeMethods.SetForegroundWindow(Handle);
+			//NativeMethods.SendMessage(Handle, WM.SETFOCUS, 0, 0);
+			//NativeMethods.SendMessage(Handle, WM.MOUSEACTIVATE, 0, 0);
 		}
 		#endregion
 

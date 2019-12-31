@@ -52,6 +52,7 @@
     <Compile Include="Enums\GWL.cs" />
     <Compile Include="Enums\HWND.cs" />
     <Compile Include="Enums\MF.cs" />
+    <Compile Include="Enums\ProcessAccessFlags.cs" />
     <Compile Include="Enums\WM.cs" />
     <Compile Include="Enums\WS.cs" />
     <Compile Include="Modules\RECT.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="TypeHelpers\StringHelper.cs" />
     <Compile Include="WindowsObjects\Menu.cs" />
     <Compile Include="WindowsObjects\MenuItem.cs" />
+    <Compile Include="WindowsObjects\Toolbar.cs" />
     <Compile Include="WindowsObjects\Window.cs" />
     <Compile Include="WindowsObjects\WindowBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
